@@ -1,4 +1,7 @@
 package task3
+import java.io._
+
+import scala.util.{Try, Success, Failure}
 
 /**
   * Create a program that:
@@ -9,13 +12,32 @@ package task3
   *   5. write the CleanStreams into several files
   *
   * */
-
 object Main {
 
   def main(args: Array[String]): Unit = {
     val path = args.head
-    println(s"${args.toList}")
-    println(s"arg: ${path}")
+    //val path = "E:\\Project_A\\hasil_crawler"
+    val file = new File(path)
+    val files1 = file.listFiles()
+    val files = Try { file.listFiles() }
+
+    if (files1 == null) {
+      println(
+        "Path yang Anda masukkan salah!, contoh penulisan path" + "\n" + "E:\\(double backslash)Project_A\\(double backslash)hasil_crawler"
+      )
+    } else {
+      println(("\n") + "Success" + ("\n") + files1.mkString("\n"))
+    }
+
+    // files match {
+
+    //   case Success(files) =>
+    //     println(("\n") + "Success" + ("\n") + files.mkString("\n"))
+
+    //   case Failure(ex) => ex
+
+    // }
+
   }
 
 }

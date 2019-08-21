@@ -1,0 +1,142 @@
+{
+    "version" : "1.1.2",
+    "project" : {
+        "name" : "task-3-test",
+        "directory" : "E:\\Project_A\\task-3",
+        "sources" : [
+            "E:\\Project_A\\task-3\\src\\test\\scala-2.12",
+            "E:\\Project_A\\task-3\\src\\test\\scala",
+            "E:\\Project_A\\task-3\\src\\test\\java",
+            "E:\\Project_A\\task-3\\target\\scala-2.12\\src_managed\\test"
+        ],
+        "dependencies" : [
+            "task-3"
+        ],
+        "classpath" : [
+            "E:\\Project_A\\task-3\\.bloop\\task-3\\scala-2.12\\classes",
+            "C:\\Users\\User\\.sbt\\boot\\scala-2.12.7\\lib\\scala-library.jar",
+            "C:\\Users\\User\\.ivy2\\cache\\joda-time\\joda-time\\jars\\joda-time-2.10.3.jar"
+        ],
+        "out" : "E:\\Project_A\\task-3\\.bloop\\task-3",
+        "classesDir" : "E:\\Project_A\\task-3\\.bloop\\task-3\\scala-2.12\\test-classes",
+        "resources" : [
+            "E:\\Project_A\\task-3\\src\\test\\resources",
+            "E:\\Project_A\\task-3\\target\\scala-2.12\\resource_managed\\test"
+        ],
+        "scala" : {
+            "organization" : "org.scala-lang",
+            "name" : "scala-compiler",
+            "version" : "2.12.7",
+            "options" : [
+                "-P:semanticdb:synthetics:on",
+                "-P:semanticdb:failures:warning",
+                "-P:semanticdb:sourceroot:E:\\Project_A\\task-3",
+                "-Yrangepos",
+                "-Xplugin-require:semanticdb",
+                "-Xplugin:C:\\Users\\User\\.ivy2\\cache\\org.scalameta\\semanticdb-scalac_2.12.7\\jars\\semanticdb-scalac_2.12.7-4.1.9.jar"
+            ],
+            "jars" : [
+                "C:\\Users\\User\\.sbt\\boot\\scala-2.12.7\\lib\\jline.jar",
+                "C:\\Users\\User\\.sbt\\boot\\scala-2.12.7\\lib\\scala-compiler.jar",
+                "C:\\Users\\User\\.sbt\\boot\\scala-2.12.7\\lib\\scala-library.jar",
+                "C:\\Users\\User\\.sbt\\boot\\scala-2.12.7\\lib\\scala-reflect.jar",
+                "C:\\Users\\User\\.sbt\\boot\\scala-2.12.7\\lib\\scala-xml_2.12.jar"
+            ],
+            "setup" : {
+                "order" : "mixed",
+                "addLibraryToBootClasspath" : true,
+                "addCompilerToClasspath" : false,
+                "addExtraJarsToClasspath" : false,
+                "manageBootClasspath" : true,
+                "filterLibraryFromClasspath" : true
+            }
+        },
+        "java" : {
+            "options" : [
+            ]
+        },
+        "test" : {
+            "frameworks" : [
+                {
+                    "names" : [
+                        "org.scalacheck.ScalaCheckFramework"
+                    ]
+                },
+                {
+                    "names" : [
+                        "org.specs2.runner.Specs2Framework",
+                        "org.specs2.runner.SpecsFramework"
+                    ]
+                },
+                {
+                    "names" : [
+                        "org.specs.runner.SpecsFramework"
+                    ]
+                },
+                {
+                    "names" : [
+                        "org.scalatest.tools.Framework",
+                        "org.scalatest.tools.ScalaTestFramework"
+                    ]
+                },
+                {
+                    "names" : [
+                        "com.novocode.junit.JUnitFramework"
+                    ]
+                }
+            ],
+            "options" : {
+                "excludes" : [
+                ],
+                "arguments" : [
+                ]
+            }
+        },
+        "platform" : {
+            "name" : "jvm",
+            "config" : {
+                "home" : "C:\\Program Files\\Java\\jdk1.8.0_131\\jre",
+                "options" : [
+                ]
+            },
+            "mainClass" : [
+            ]
+        },
+        "resolution" : {
+            "modules" : [
+                {
+                    "organization" : "org.scala-lang",
+                    "name" : "scala-library",
+                    "version" : "2.12.7",
+                    "artifacts" : [
+                        {
+                            "name" : "scala-library",
+                            "path" : "C:\\Users\\User\\.sbt\\boot\\scala-2.12.7\\lib\\scala-library.jar"
+                        },
+                        {
+                            "name" : "scala-library",
+                            "classifier" : "sources",
+                            "path" : "C:\\Users\\User\\.ivy2\\cache\\org.scala-lang\\scala-library\\srcs\\scala-library-2.12.7-sources.jar"
+                        }
+                    ]
+                },
+                {
+                    "organization" : "joda-time",
+                    "name" : "joda-time",
+                    "version" : "2.10.3",
+                    "artifacts" : [
+                        {
+                            "name" : "joda-time",
+                            "path" : "C:\\Users\\User\\.ivy2\\cache\\joda-time\\joda-time\\jars\\joda-time-2.10.3.jar"
+                        },
+                        {
+                            "name" : "joda-time",
+                            "classifier" : "sources",
+                            "path" : "C:\\Users\\User\\.ivy2\\cache\\joda-time\\joda-time\\srcs\\joda-time-2.10.3-sources.jar"
+                        }
+                    ]
+                }
+            ]
+        }
+    }
+}
