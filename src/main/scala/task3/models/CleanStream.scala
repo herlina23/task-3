@@ -7,3 +7,5 @@ case class CleanStream(
     content: String,
     timestamp: DateTime
 )
+
+// list of cleanstream
