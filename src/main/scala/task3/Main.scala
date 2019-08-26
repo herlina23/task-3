@@ -1,7 +1,21 @@
-// package task3
-// import java.io._
+package coba
+import java.io._
+import play.api.libs.json.{JsError, JsSuccess, Json}
 
-// import scala.util.{Try, Success, Failure}
+import scala.util.Success
+import scala.util.Failure
+
+import org.joda.time
+import org.joda.time.Seconds
+
+import scala.concurrent._
+import ExecutionContext.Implicits.global
+import scala.concurrent.{Await, ExecutionContext, Future}
+import scala.concurrent.duration._
+import jsn.Twitter
+import jsn.Fb
+import jsn.Instagram
+import _root_.scala.io.Codec
 
 // /**
 //   * Create a program that:
@@ -12,40 +26,68 @@
 //   *   5. write the CleanStreams into several files
 //   *
 //   * */
-// object Main {
 
-//   def main(args: Array[String]): Unit = {
-//     val path = args.head
-//     //val path = "E:\\Project_A\\hasil_crawler"
-//     val file = new File(path)
-//     val files = file.listFiles()
-//     val rdfile = files.mkString("\n")
-//     //val files = Try { file.listFiles() }
-//     if (files1 == null) {
-//       println(
-//         "Path yang Anda masukkan salah!, contoh penulisan path" + "\n" + "E:\\(double backslash)Project_A\\(double backslash)hasil_crawler"
-//       )
-//     } else {
-//       println(("\n") + "Success" + ("\n") + files.mkString("\n"))
-//       for(lt<-files){
-//         if(lt.con //lt contains suatu kata){
-// // coba.filter(_.contains("ni"))
-// // fls.map(_.toString)
-// // fls2.filter(_.contains("instagram"))
-//         }
-//       }
+object Main {
 
-//     }
+  def main(args: Array[String]): Unit = {
 
-//     // files match {
+    //println("##############################################")
+    val path = args.head
+    //val path = "E:\\Project_A\\hasil_crawler"
+    val file = new File(path)
+    val files = file.listFiles().toList.map(_.toString)
 
-//     //   case Success(files) =>
-//     //     println(("\n") + "Success" + ("\n") + files.mkString("\n"))
+    case class FileTag(fileName: String, fileType: String) {
+      lazy val body = {
+        val fileBuffer = io.Source.fromFile(fileName)(Codec.UTF8)
+        val fileContent = fileBuffer.getLines().toList
+        fileBuffer.close()
+        fileContent(1)
+        //println(fileContent.split("\n")(1))
+      }
+    }
 
-//     //   case Failure(ex) => ex
+    files
+      .map { file =>
+        val fileStr = file.toString()
+        val fileType = if (fileStr.contains("instagram")) {
+          "instagram"
+        } else if (fileStr.contains("facebook")) {
+          "facebook"
+        } else if (fileStr.contains("twitter")) {
+          "twitter"
+        } else "unidentified"
 
-//     // }
+        FileTag(fileStr, fileType)
 
-//   }
+      }
+      .map { fileTag =>
+        val body = fileTag.body
+        val fileType = fileTag.fileType
+        val jsonValue = Json.parse(body)
+        val optList =
+          if (fileType == "instagram") jsonValue.asOpt[List[Instagram]].map {
+            list =>
+              list.map(_.toCleanStream)
+          } else if (fileType == "facebook") jsonValue.asOpt[List[Fb]].map {
+            list =>
+              list.map(_.toCleanStream)
+          } else if (fileType == "twitter") jsonValue.asOpt[List[Twitter]].map {
+            list =>
+              list.map(_.toCleanStream)
+          } else None
 
-// }
+        val print2json = Json.toJson(optList).toString
+
+        val nbFiles = files.length
+        for (n <- 1 to nbFiles) {
+          val writer = new PrintWriter(new File(s"t$n.json"))
+          writer.write(print2json)
+          writer.close()
+        }
+
+      }
+
+  }
+
+}

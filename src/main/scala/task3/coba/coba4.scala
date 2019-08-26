@@ -67,9 +67,39 @@ object Coba4 {
               list.map(_.toCleanStream)
           } else None
 
-        val coba1 = optList.map(_.mkString(",")).toList
-        println(coba1)
-        println(coba1.length)
+        val opjsvalue = optList.map { list =>
+          Json.toJson(list)
+        }
+
+        val opj1 = opjsvalue.toList
+
+        val cca = Json.toJson(optList).toString
+        // val cca1 = Json.prettyPrint(cca)
+
+        //val print = cca.toString()
+
+//hbs itu jsValue ke tostring
+// breakdown klo mau test kodingan
+        //val coba1 = optList.map(_.mkString(",")).toList
+
+        val ab1 = opjsvalue.map(_.toString())
+
+        //println(opjsvalue)
+
+        // val pw = new PrintWriter(new File("sosmed1.json"))
+        // pw.write(ab1.toString())
+        // pw.close
+
+        // println("printed")
+        println()
+
+        val nbFiles = files.length
+        for (n <- 1 to nbFiles) {
+          val writer = new PrintWriter(new File(s"t$n.json"))
+          writer.write(cca)
+          writer.close()
+        }
+
       }
 
   }

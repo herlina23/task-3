@@ -1,6 +1,6 @@
 #FileLock
-#Fri Aug 23 15:09:33 ICT 2019
+#Mon Aug 26 15:19:08 ICT 2019
 hostName=Herlina
-id=16cbd8606f3049c9172f1d34dc2cd3b18cbef9eebe3
+id=16ccd01e29f33512fd7f3703c07c8ac36bc8859fc4b
 method=file
-server=192.168.1.222\:8729
+server=192.168.1.222\:36508
