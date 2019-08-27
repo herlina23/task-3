@@ -32,8 +32,8 @@ object Main {
   def main(args: Array[String]): Unit = {
 
     //println("##############################################")
-    val path = args.head
-    //val path = "E:\\Project_A\\hasil_crawler"
+    //val path = args.head
+    val path = "E:\\Project_A\\hasil_crawler"
     val file = new File(path)
     val files = file.listFiles().toList.map(_.toString)
 
@@ -47,7 +47,7 @@ object Main {
       }
     }
 
-    files
+    val fileParser = files
       .map { file =>
         val fileStr = file.toString()
         val fileType = if (fileStr.contains("instagram")) {
@@ -77,16 +77,22 @@ object Main {
               list.map(_.toCleanStream)
           } else None
 
-        val print2json = Json.toJson(optList).toString
-
-        val nbFiles = files.length
-        for (n <- 1 to nbFiles) {
-          val writer = new PrintWriter(new File(s"t$n.json"))
-          writer.write(print2json)
-          writer.close()
-        }
-
+        optList
       }
+
+    val flattenFile = fileParser.flatten.flatten
+
+    val divi = flattenFile.grouped(20).toList
+
+    divi.zipWithIndex.foreach {
+      case (a, b) =>
+        val print2json = Json.toJson(a).toString()
+        val writer = new PrintWriter(new File(s"try$b.json"))
+        writer.write(print2json)
+        writer.close()
+        println("Json is generated")
+
+    }
 
   }
 

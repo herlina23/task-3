@@ -17,6 +17,16 @@ import jsn.Fb
 import jsn.Instagram
 import _root_.scala.io.Codec
 
+// /**
+//   * Create a program that:
+//   *   1. receive 1 argument from command line
+//   *   2. read all files from the path based on the argument
+//   *   3. parse the content of the files into JsValue
+//   *   4. transform all of the JsValues into CleanStreams
+//   *   5. write the CleanStreams into several files
+//   *
+//   * */
+
 object Coba4 {
 
   def main(args: Array[String]): Unit = {
@@ -31,6 +41,8 @@ object Coba4 {
       lazy val body = {
         val fileBuffer = io.Source.fromFile(fileName)(Codec.UTF8)
         val fileContent = fileBuffer.getLines().toList
+        val cbs2 = fileBuffer.getLines()
+        println(cbs2)
         fileBuffer.close()
         fileContent(1)
         //println(fileContent.split("\n")(1))
@@ -71,34 +83,15 @@ object Coba4 {
           Json.toJson(list)
         }
 
-        val opj1 = opjsvalue.toList
+        val opj1 = opjsvalue.toList.mkString
 
         val cca = Json.toJson(optList).toString
-        // val cca1 = Json.prettyPrint(cca)
-
-        //val print = cca.toString()
-
-//hbs itu jsValue ke tostring
-// breakdown klo mau test kodingan
-        //val coba1 = optList.map(_.mkString(",")).toList
 
         val ab1 = opjsvalue.map(_.toString())
 
-        //println(opjsvalue)
-
-        // val pw = new PrintWriter(new File("sosmed1.json"))
-        // pw.write(ab1.toString())
-        // pw.close
-
-        // println("printed")
-        println()
-
-        val nbFiles = files.length
-        for (n <- 1 to nbFiles) {
-          val writer = new PrintWriter(new File(s"t$n.json"))
-          writer.write(cca)
-          writer.close()
-        }
+        val cb1 = (s"""][""")
+        val cb2 = opj1.replace(cb1, "")
+      //println(cb2)
 
       }
 
