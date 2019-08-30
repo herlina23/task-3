@@ -27,6 +27,29 @@ import _root_.scala.io.Codec
 //   *
 //   * */
 
+case class FileTag(fileName: String, fileType: String) {
+  lazy val body = {
+    val fileBuffer = io.Source.fromFile(fileName)(Codec.UTF8)
+    val fileContent = fileBuffer.getLines().toList
+    fileBuffer.close()
+    fileContent(1)
+  }
+}
+
+object FileTag {
+  def apply(fileName: File): FileTag = {
+    val fileStr = fileName.toString()
+    val fileType = if (fileStr.contains("instagram")) {
+      "instagram"
+    } else if (fileStr.contains("facebook")) {
+      "facebook"
+    } else if (fileStr.contains("twitter")) {
+      "twitter"
+    } else "unidentified"
+    FileTag(fileStr, fileType)
+  }
+}
+
 object Coba6 {
 
   def main(args: Array[String]): Unit = {
@@ -36,16 +59,6 @@ object Coba6 {
     val path = "E:\\Project_A\\hasil_crawler"
     val file = new File(path)
     val files = file.listFiles().toList.map(_.toString)
-
-    case class FileTag(fileName: String, fileType: String) {
-      lazy val body = {
-        val fileBuffer = io.Source.fromFile(fileName)(Codec.UTF8)
-        val fileContent = fileBuffer.getLines().toList
-        fileBuffer.close()
-        fileContent(1)
-        //println(fileContent.split("\n")(1))
-      }
-    }
 
     val fileParser = files
       .map { file =>
@@ -78,6 +91,7 @@ object Coba6 {
           } else None
 
         optList
+
       }
 
     val flattenFile = fileParser.flatten.flatten
@@ -91,7 +105,6 @@ object Coba6 {
         writer.write(print2json)
         writer.close()
         println("Json is generated")
-
     }
 
   }

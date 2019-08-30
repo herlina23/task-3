@@ -86,11 +86,11 @@ object Main {
 
     divi.zipWithIndex.foreach {
       case (a, b) =>
-        val print2json = Json.toJson(a).toString()
-        val writer = new PrintWriter(new File(s"try$b.json"))
-        writer.write(print2json)
-        writer.close()
-        println("Json is generated")
+        // val print2json = Json.toJson(a).toString()
+        // val writer = new PrintWriter(new File(s"try$b.json"))
+        // writer.write(print2json)
+        // writer.close()
+        println(s"jsonfile$b is generated")
 
     }
 

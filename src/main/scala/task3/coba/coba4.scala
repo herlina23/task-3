@@ -17,83 +17,123 @@ import jsn.Fb
 import jsn.Instagram
 import _root_.scala.io.Codec
 
-// /**
-//   * Create a program that:
-//   *   1. receive 1 argument from command line
-//   *   2. read all files from the path based on the argument
-//   *   3. parse the content of the files into JsValue
-//   *   4. transform all of the JsValues into CleanStreams
-//   *   5. write the CleanStreams into several files
-//   *
-//   * */
-
 object Coba4 {
+
+  implicit class FileTagFutureSupport(fileTag: FileTag) {
+    def futureBody(implicit ec: ExecutionContext) =
+      Future {
+        fileTag.body
+      }(ec)
+  }
 
   def main(args: Array[String]): Unit = {
 
-    //println("##############################################")
-    //val path = args.head
-    val path = "E:\\Project_A\\hasil_crawler"
-    val file = new File(path)
-    val files = file.listFiles().toList.map(_.toString)
-
-    case class FileTag(fileName: String, fileType: String) {
-      lazy val body = {
-        val fileBuffer = io.Source.fromFile(fileName)(Codec.UTF8)
-        val fileContent = fileBuffer.getLines().toList
-        val cbs2 = fileBuffer.getLines()
-        println(cbs2)
-        fileBuffer.close()
-        fileContent(1)
-        //println(fileContent.split("\n")(1))
+    val load2 = for {
+      fileList <- Future {
+        val path = "E:\\Project_A\\hasil_crawler"
+        val file = new File(path)
+        val files = file.listFiles().toList
+        files
       }
-    }
+      writing <- {
+        val listOfBody = fileList
+          .map { file =>
+            val body = FileTag(file).futureBody
+            val head = file.toString
+            val parsing = body.map { exp =>
+              val jsonValue = Json.parse(exp)
 
-    files
-      .map { file =>
-        val fileStr = file.toString()
-        val fileType = if (fileStr.contains("instagram")) {
-          "instagram"
-        } else if (fileStr.contains("facebook")) {
-          "facebook"
-        } else if (fileStr.contains("twitter")) {
-          "twitter"
-        } else "unidentified"
+              val optList =
+                if (head.contains("instagram"))
+                  jsonValue.asOpt[List[Instagram]].map { list =>
+                    list.map(_.toCleanStream)
+                  } else if (head.contains("facebook"))
+                  jsonValue.asOpt[List[Fb]].map { list =>
+                    list.map(_.toCleanStream)
+                  } else if (head.contains("twitter"))
+                  jsonValue.asOpt[List[Twitter]].map { list =>
+                    list.map(_.toCleanStream)
+                  } else None
 
-        FileTag(fileStr, fileType)
+              optList
+            }
+            parsing
+          }
 
+        Future
+          .sequence(listOfBody)
       }
-      .map { fileTag =>
-        val body = fileTag.body
-        val fileType = fileTag.fileType
-        val jsonValue = Json.parse(body)
-        val optList =
-          if (fileType == "instagram") jsonValue.asOpt[List[Instagram]].map {
-            list =>
-              list.map(_.toCleanStream)
-          } else if (fileType == "facebook") jsonValue.asOpt[List[Fb]].map {
-            list =>
-              list.map(_.toCleanStream)
-          } else if (fileType == "twitter") jsonValue.asOpt[List[Twitter]].map {
-            list =>
-              list.map(_.toCleanStream)
-          } else None
+      result <- {
+        val flattenFile = writing.flatten.flatten
+        val divi = flattenFile.grouped(20).toList
+        val generated = divi.zipWithIndex.map {
+          case (a, b) =>
+            Future {
+              val print2json = Json.toJson(a).toString()
+              val writer = new PrintWriter(new File(s"jsonfile$b.json"))
+              writer.write(print2json)
+              writer.close()
+              println("Jsonfile is generated")
+            }
 
-        val opjsvalue = optList.map { list =>
-          Json.toJson(list)
         }
-
-        val opj1 = opjsvalue.toList.mkString
-
-        val cca = Json.toJson(optList).toString
-
-        val ab1 = opjsvalue.map(_.toString())
-
-        val cb1 = (s"""][""")
-        val cb2 = opj1.replace(cb1, "")
-      //println(cb2)
-
+        Future.sequence(generated)
       }
+    } yield result
+
+    // val load = Future {
+    //   val path = "E:\\Project_A\\hasil_crawler"
+    //   val file = new File(path)
+    //   val files = file.listFiles().toList
+    //   files
+    // }.flatMap { fileList =>
+    //     // val head = fileList.toString()
+
+    //     val listOfBody = fileList
+    //       .map { file =>
+    //         val body = FileTag(file).futureBody
+    //         val head = file.toString
+    //         val parsing = body.map { exp =>
+    //           val jsonValue = Json.parse(exp)
+
+    //           val optList =
+    //             if (head.contains("instagram"))
+    //               jsonValue.asOpt[List[Instagram]].map { list =>
+    //                 list.map(_.toCleanStream)
+    //               } else if (head.contains("facebook"))
+    //               jsonValue.asOpt[List[Fb]].map { list =>
+    //                 list.map(_.toCleanStream)
+    //               } else if (head.contains("twitter"))
+    //               jsonValue.asOpt[List[Twitter]].map { list =>
+    //                 list.map(_.toCleanStream)
+    //               } else None
+
+    //           optList
+    //         }
+    //         parsing
+    //       }
+    //     Future.sequence(listOfBody)
+    //   }
+    //   .flatMap { writing =>
+    //     val flattenFile = writing.flatten.flatten
+    //     val divi = flattenFile.grouped(20).toList
+    //     val generated = divi.zipWithIndex.map {
+
+    //       case (a, b) =>
+    //         Future {
+    //           val print2json = Json.toJson(a).toString()
+    //           val writer = new PrintWriter(new File(s"jsonfile$b.json"))
+    //           writer.write(print2json)
+    //           writer.close()
+    //           println("Jsonfile is generated")
+    //         }
+
+    //     }
+    //     Future.sequence(generated)
+
+    //   }
+
+    val result = Await.result(load2, 20.seconds)
 
   }
 
