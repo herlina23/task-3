@@ -68,7 +68,7 @@ object FutureMain {
 
           case (a, b) =>
             Future {
-              // val print2json = Json.toJson(a).toString()
+              // print2json = Json.toJson(a).toString()
               // val writer = new PrintWriter(new File(s"jsonfile$b.json"))
               // writer.write(print2json)
               // writer.close()
