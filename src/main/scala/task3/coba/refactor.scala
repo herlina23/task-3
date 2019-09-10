@@ -123,10 +123,19 @@ object Refactor {
   }
 
   def write2File(a: List[CleanStream], b: Int) {
-    // val print2json = Json.toJson(a).toString()
-    // val writer = new PrintWriter(new File(s"New1/future$b.json"))
-    // writer.write(print2json)
-    // writer.close()
+    val print2json = Json.toJson(a).toString()
+    val writer = new PrintWriter(new File(s"New1/result$b.json"))
+    writer.write(print2json)
+    writer.close()
+    println(s"future$b is generated")
+  }
+
+  def write2File2(a: List[CleanStream], b: Int) = {
+    val log = new File(s"New1/future$b.json")
+    val print2json = Json.toJson(a).toString()
+    val writer = new PrintWriter(new FileWriter(s"New1/future$b.json", true))
+    writer.write(print2json)
+    writer.close()
     println(s"future$b is generated")
   }
 
