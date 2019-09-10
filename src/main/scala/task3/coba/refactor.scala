@@ -18,6 +18,8 @@ import jsn.Instagram
 import _root_.scala.io.Codec
 import play.api.libs.json.JsValue
 import task3.models.CleanStream
+import akka.util.ByteString
+import java.nio.file.Path
 
 object Refactor {
 
@@ -26,6 +28,29 @@ object Refactor {
       Future {
         fileTag.body
       }(ec)
+  }
+
+  def readStream(bs: ByteString, path: Path): Option[List[CleanStream]] = {
+    val fileContent = bs.utf8String
+    val head = path.toString()
+    val sl = fileContent.split("\n")
+    val jsonValue = Json.parse(sl(1))
+
+    val optList = {
+      if (head.contains("instagram"))
+        jsonValue.asOpt[List[Instagram]].map { list =>
+          list.map(_.toCleanStream)
+        } else if (head.contains("facebook"))
+        jsonValue.asOpt[List[Fb]].map { list =>
+          list.map(_.toCleanStream)
+        } else if (head.contains("twitter"))
+        jsonValue.asOpt[List[Twitter]].map { list =>
+          list.map(_.toCleanStream)
+        } else None
+
+    }
+    optList
+
   }
 
   def loading(path: String): List[File] = {
@@ -66,9 +91,17 @@ object Refactor {
     divi
   }
 
+  def flattenStream(
+      writing: Option[List[CleanStream]]
+  ): List[List[CleanStream]] = {
+    val flattenFile = writing.toList.flatten
+    val divi = flattenFile.grouped(20).toList
+    divi
+  }
+
   def write2File(a: List[CleanStream], b: Int) {
     val print2json = Json.toJson(a).toString()
-    val writer = new PrintWriter(new File(s"future$b.json"))
+    val writer = new PrintWriter(new File(s"New1/future$b.json"))
     writer.write(print2json)
     writer.close()
     println(s"future$b is generated")
