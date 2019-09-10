@@ -21,6 +21,29 @@ import task3.models.CleanStream
 import akka.util.ByteString
 import java.nio.file.Path
 
+case class FileTag(fileName: String, fileType: String) {
+  lazy val body = {
+    val fileBuffer = io.Source.fromFile(fileName)(Codec.UTF8)
+    val fileContent = fileBuffer.getLines().toList
+    fileBuffer.close()
+    fileContent(1)
+  }
+}
+
+object FileTag {
+  def apply(fileName: File): FileTag = {
+    val fileStr = fileName.toString()
+    val fileType = if (fileStr.contains("instagram")) {
+      "instagram"
+    } else if (fileStr.contains("facebook")) {
+      "facebook"
+    } else if (fileStr.contains("twitter")) {
+      "twitter"
+    } else "unidentified"
+    FileTag(fileStr, fileType)
+  }
+}
+
 object Refactor {
 
   implicit class FileTagFutureSupport(fileTag: FileTag) {
@@ -100,10 +123,10 @@ object Refactor {
   }
 
   def write2File(a: List[CleanStream], b: Int) {
-    val print2json = Json.toJson(a).toString()
-    val writer = new PrintWriter(new File(s"New1/future$b.json"))
-    writer.write(print2json)
-    writer.close()
+    // val print2json = Json.toJson(a).toString()
+    // val writer = new PrintWriter(new File(s"New1/future$b.json"))
+    // writer.write(print2json)
+    // writer.close()
     println(s"future$b is generated")
   }
 
