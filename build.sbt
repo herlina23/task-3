@@ -3,11 +3,21 @@ name := "task-3"
 version := "0.1"
 
 scalaVersion := "2.12.8"
+<<<<<<< HEAD
 
 libraryDependencies += "com.typesafe.play" %% "play-json" % "2.6.7"
 
 libraryDependencies += "joda-time" % "joda-time" % "2.10.3"
 
+=======
+
+libraryDependencies += "joda-time" % "joda-time" % "2.10.3"
+
+libraryDependencies += "com.typesafe.play" %% "play-json" % "2.6.7"
+
+//libraryDependencies += "com.typesafe.akka" %% "akka-stream" % "2.5.25"
+
+>>>>>>> 2ccb45e87cada4e21c8611f9e948839b7bbb187a
 lazy val akkaVersion = "2.5.25"
 
 libraryDependencies ++= Seq(
@@ -19,4 +29,8 @@ libraryDependencies ++= Seq(
 
 libraryDependencies += "com.lightbend.akka" %% "akka-stream-alpakka-amqp" % "0.1"
 
+<<<<<<< HEAD
 libraryDependencies += "com.lightbend.akka" %% "akka-stream-alpakka-file" % "1.1.1"
+=======
+//libraryDependencies += "org.scala-lang.modules" %% "scala-async" % "0.10.0"
+>>>>>>> 2ccb45e87cada4e21c8611f9e948839b7bbb187a
