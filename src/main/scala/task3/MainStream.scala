@@ -74,7 +74,7 @@ object MainStream {
             val divi = Refactor.flattenStream(readStream)
             val generated = divi.zipWithIndex.map {
               case (a, b) =>
-                Refactor.write2File2(a, b)
+                Refactor.write2File3(a, b)
 
             }
 

@@ -1,13 +1,10 @@
 package coba
 import java.io._
 import play.api.libs.json.{JsError, JsSuccess, Json}
-
 import scala.util.Success
 import scala.util.Failure
-
 import org.joda.time
 import org.joda.time.Seconds
-
 import scala.concurrent._
 import ExecutionContext.Implicits.global
 import scala.concurrent.{Await, ExecutionContext, Future}
@@ -20,6 +17,7 @@ import play.api.libs.json.JsValue
 import task3.models.CleanStream
 import akka.util.ByteString
 import java.nio.file.Path
+import scala.util.Random
 
 case class FileTag(fileName: String, fileType: String) {
   lazy val body = {
@@ -137,6 +135,18 @@ object Refactor {
     writer.write(print2json)
     writer.close()
     println(s"future$b is generated")
+  }
+
+  def write2File3(a: List[CleanStream], b: Int) = {
+
+    val random = scala.util.Random.alphanumeric.take(4).mkString
+    val filename11 = s"New1/future$b" + "_" + random + ".json"
+    val print2json = Json.toJson(a).toString()
+    //println(a.length)
+    val writer = new PrintWriter(new FileWriter(filename11, true))
+    writer.write(print2json)
+    writer.close()
+    println(filename11 + " is generated" + "\n")
   }
 
 }
